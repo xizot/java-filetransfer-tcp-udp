@@ -145,11 +145,14 @@ class DownLoadFile extends Thread{
                 // get file info
                 String fileInfo = receiveData(client);
                 String[] splitFileInfo = fileInfo.split("@@");
+                
+                
                 String fileName = splitFileInfo[0];
-                long fileSize = Long.parseLong(splitFileInfo[1]);
-                int piecesOfFile = Integer.parseInt(splitFileInfo[2]);
-                int lastByteLength = 0;
+                long fileSize = Long.parseLong(splitFileInfo[1].trim());
+                int piecesOfFile = Integer.parseInt(splitFileInfo[2].trim());
+                int lastByteLength = Integer.parseInt(splitFileInfo[3].trim());
                 String destinationDirectory = "./receive/" + fileName;
+                
                 
                 System.out.println("\n\nFile name: " + fileName);
                 System.out.println("File size: " + fileSize);
@@ -165,7 +168,7 @@ class DownLoadFile extends Thread{
                 File fileReceive = new File(destinationDirectory);
                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fileReceive));
                 // receive pieces of file
-                for (int i = 0; i < piecesOfFile; i++) {
+                for (int i = 0; i < (piecesOfFile - 1); i++) {
                     DatagramPacket receivePacket = new DatagramPacket(dataReceive, dataReceive.length,host, port);
                     client.receive(receivePacket);
                     bos.write(dataReceive, 0, PIECES_OF_FILE_SIZE);

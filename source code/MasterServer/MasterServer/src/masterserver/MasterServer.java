@@ -187,16 +187,16 @@ public class MasterServer extends Thread{
         MasterServer server = new MasterServer(port );
         server.startServer();
         // Automatically shutdown in 1 hour
-//        try
-//        {
-//            Thread.sleep( 60*60*1000 );
-//        }
-//        catch( Exception e )
-//        {
-//            e.printStackTrace();
-//        }
-//
-//        server.stopServer();
+        try
+        {
+            Thread.sleep( 60*60*1000 );
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+        server.stopServer();
     }
     
 }
@@ -274,7 +274,7 @@ class ClientRequestHandler extends Thread{
             }
             
         } catch (IOException ex) {
-            System.err.println("a client disconnect");
+            System.err.println("A client disconnect");
             stopClientHandler();
             
 //            Logger.getLogger(ClientRequestHandler.class.getName()).log(Level.SEVERE, null, ex);

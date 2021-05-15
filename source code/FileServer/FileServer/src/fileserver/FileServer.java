@@ -172,11 +172,11 @@ public class FileServer {
 }
 
 class SendFileServer extends Thread{
-    private DatagramSocket server;
-    private InetAddress clientIP;
-    private int clientPort;
-    private File file;
-    private int PIECES_OF_FILE_SIZE = 1024 * 32;
+    private final DatagramSocket server;
+    private final InetAddress clientIP;
+    private final int clientPort;
+    private final File file;
+    private final int PIECES_OF_FILE_SIZE = 1024 * 32;
     public SendFileServer(DatagramSocket server, InetAddress clientIP, int clientPort, File file){
         this.server = server;
         this.clientIP = clientIP;
@@ -214,9 +214,10 @@ class SendFileServer extends Thread{
              // split file into pieces and assign to fileBytess
             byte[][] fileBytess = new byte[piecesOfFile][PIECES_OF_FILE_SIZE];
             int count = 0;
-            while (bis.read(bytePart, 0, PIECES_OF_FILE_SIZE) > 0) {
-                fileBytess[count++] = bytePart;
+            while (bis.read(bytePart, 0, PIECES_OF_FILE_SIZE) != -1) {
+                fileBytess[count] = bytePart;
                 bytePart = new byte[PIECES_OF_FILE_SIZE];
+                count++;
             }
  
             // read file info
@@ -229,7 +230,7 @@ class SendFileServer extends Thread{
             System.out.println("File sending...");
             
             // send pieces of file
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < (count - 1); i++) {
                 DatagramPacket sendPacket = new DatagramPacket(fileBytess[i], PIECES_OF_FILE_SIZE,clientIP, clientPort);
                 server.send(sendPacket);
                 wait(40);
