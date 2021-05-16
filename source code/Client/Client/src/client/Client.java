@@ -158,7 +158,6 @@ class DownLoadFile extends Thread{
                 System.out.println("File size: " + fileSize);
                 System.out.println("Pieces of file: " + piecesOfFile);
                 System.out.println("Last bytes length: "+ lastByteLength);
-                System.out.println("Last bytes length: "+ lastByteLength);
                 System.out.println("Destination directory: "+ destinationDirectory);
 
 
@@ -179,11 +178,19 @@ class DownLoadFile extends Thread{
                 client.receive(receivePacket);
                 bos.write(dataReceive, 0, lastByteLength);
                 bos.flush();
-                System.out.println("Download file: [" +fileName+ "] done!");
-
                 // close stream
                 bos.close();
-               
+                
+                String status = "fail";
+                status = receiveData(client);
+                if(status.trim().equals("done")){
+                    System.out.println("Download file: [" +fileName+ "] done!");
+                }
+                else{
+                    System.err.println("Have a problem. Try downloading again.");
+                    fileReceive.delete();
+                }
+                
             }
             else{
                 System.err.println("Have a problem. Please restart server.");

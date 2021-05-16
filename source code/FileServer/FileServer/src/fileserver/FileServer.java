@@ -219,6 +219,9 @@ class SendFileServer extends Thread{
                 bytePart = new byte[PIECES_OF_FILE_SIZE];
                 count++;
             }
+            
+            // close stream
+            bis.close();
  
             // read file info
             String fileInfo = file.getName() + "@@" + file.length() + "@@" + piecesOfFile + "@@" + lastByteLength;
@@ -241,8 +244,7 @@ class SendFileServer extends Thread{
             server.send(sendPacket);
             wait(40);
 
-            // close stream
-            bis.close();
+            sendData("done", server);
             System.out.println("Send successful.");
         } catch (IOException ex) {
             Logger.getLogger(SendFileServer.class.getName()).log(Level.SEVERE, null, ex);

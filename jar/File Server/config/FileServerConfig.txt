@@ -1,4 +1,4 @@
 Port:9999
 File name`File path
-demo1`./data/demo.txt
-demo3`./data/demo.txt
+Text file`./data/demo.txt
+Socket Project`C:\Users\Admin\Downloads\DeBaiDASocket.pdf
